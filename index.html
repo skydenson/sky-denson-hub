@@ -156,6 +156,8 @@ footer{background:var(--deep);color:#efe4cc;position:relative}
 footer h2{color:#efe4cc;font-size:clamp(36px,6vw,72px);max-width:14ch}
 footer .wrap{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:end}
 footer small{opacity:.75}
+.fr{display:grid;gap:12px;justify-items:end;text-align:right;margin-left:auto}
+.fr>div{justify-content:flex-end}
 footer .btn{border-color:#efe4cc;color:#efe4cc}footer .btn:hover{background:var(--brass);border-color:var(--brass);color:#152841}
 .wave{display:block;width:100%;height:28px;background:var(--sand)}
 /* chapters */
@@ -413,7 +415,7 @@ footer .btn{border-color:#efe4cc;color:#efe4cc}footer .btn:hover{background:var(
 <svg class="wave" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 28V14q50-14 100 0t100 0t100 0t100 0t100 0t100 0t100 0t100 0t100 0t100 0t100 0t100 0V28z" fill="#1f3a5f"/></svg>
 <footer class="band"><div class="wrap">
   <h2>Let's build something with a sense of place.</h2>
-  <div style="display:grid;gap:12px;justify-items:start"><svg width="44" height="44" viewBox="0 0 64 64" aria-hidden="true"><use href="#anchor" style="--a:#efe4cc"/></svg><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" data-contact>Get in touch</button><a class="btn" href="#resume">Resume</a></div><small>© 2026 Sky Denson</small></div>
+  <div class="fr"><svg width="44" height="44" viewBox="0 0 64 64" aria-hidden="true"><use href="#anchor" style="--a:#efe4cc"/></svg><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" data-contact>Get in touch</button><a class="btn" href="#resume">Resume</a></div><small>© 2026 Sky Denson</small></div>
 </div></footer>
 
 <div class="port" id="port" aria-hidden="true"><span id="portl">View</span></div>
