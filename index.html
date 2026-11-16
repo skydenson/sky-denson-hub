@@ -184,7 +184,8 @@ footer .btn{border-color:#efe4cc;color:#efe4cc}footer .btn:hover{background:var(
 .pal button[aria-pressed=true]{background:var(--deep);border-color:var(--deep);color:#efe4cc}
 .wall{min-height:260px;border-radius:14px;overflow:hidden}
 /* resume */
-.cv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.8fr);gap:clamp(20px,4vw,64px)}
+.cv>div:first-child{order:2}
+.cv{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:clamp(20px,4vw,64px)}
 .cv h2{font-size:28px;margin:0 0 14px}
 .tl{list-style:none;margin:0 0 24px;padding:0;border-left:2px solid var(--brass)}
 .tl li{position:relative;padding:0 0 22px 24px}
