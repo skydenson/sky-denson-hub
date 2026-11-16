@@ -167,6 +167,7 @@ footer{background:var(--deep);color:#efe4cc;position:relative}
 footer h2{color:#efe4cc;font-size:clamp(36px,6vw,72px);max-width:14ch}
 footer .wrap{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;align-items:end}
 footer small{opacity:.75}
+@media(max-width:600px){footer .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;column-gap:16px}footer .fr{display:contents}footer .fanc{grid-column:2;grid-row:1;align-self:end}footer .fr>div,footer .fr>small{grid-column:1/-1;justify-self:end}footer .fbig{width:84px}}
 .fr{display:grid;gap:12px;justify-items:end;text-align:right;margin-left:auto}
 .fr>div{justify-content:flex-end}
 footer .btn{border-color:#efe4cc;color:#efe4cc}footer .btn:hover{background:var(--brass);border-color:var(--brass);color:#152841}
