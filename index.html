@@ -58,8 +58,7 @@ button{font:inherit;cursor:pointer}
 .naut span{flex:1;height:6px;background:repeating-linear-gradient(-58deg,var(--brass) 0 3px,var(--brassd) 3px 4px,transparent 4px 5px);border-radius:3px;opacity:.85;position:relative}
 .naut span::after{content:"";position:absolute;top:50%;width:8px;height:8px;margin-top:-4px;border-radius:50%;border:1.5px solid var(--brass);background:var(--sand)}
 .naut span:first-child::after{right:-2px}.naut span:last-child::after{left:-2px}
-.naut .helm{width:44px;height:44px;flex:none;animation:helm 18s linear infinite}
-@keyframes helm{to{transform:rotate(360deg)}}
+.naut .helm{width:44px;height:44px;flex:none;will-change:transform}
 .facts{font-size:clamp(22px,2.6vw,32px);display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));column-gap:40px}
 .facts div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:16px 0}
 .facts span{color:var(--mute)}.facts b{font-weight:500;text-align:right}
@@ -613,6 +612,10 @@ function flock(){
 setTimeout(flock,1800);
 })();
 
+
+/* ship's wheel turns only as the page scrolls */
+(()=>{const h=document.querySelector('.naut .helm');if(!h)return;let q=false;
+addEventListener('scroll',()=>{if(q)return;q=true;requestAnimationFrame(()=>{h.style.transform=`rotate(${(scrollY*.4).toFixed(1)}deg)`;q=false})},{passive:true})})();
 </script>
 </body>
 </html>
