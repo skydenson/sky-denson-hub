@@ -508,7 +508,7 @@ document.addEventListener('pointerleave',()=>{port.classList.remove('on')});
 $('#idx').innerHTML=IDX.map(r=>`<tr><td>${r.u?`<a href="${r.u}" target="_blank" rel="noopener">${r.t} ↗</a>`:r.t}</td><td>${r.c}</td><td class="hide-s">${r.pl}</td><td><span class="stat">${r.s}</span></td></tr>`).join('');
 
 /* anchor drop */
-document.querySelectorAll('.anc').forEach(s=>{s.closest('a').addEventListener('click',e=>{const onResume=location.hash==='#resume';if(onResume)e.preventDefault();s.classList.remove('drop');void s.getBoundingClientRect();s.classList.add('drop');if(onResume||!location.hash||location.hash==='#home')setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),350)});s.addEventListener('animationend',()=>s.classList.remove('drop'))});
+document.querySelectorAll('.anc').forEach(s=>{if(s.closest('.fanc'))return;s.closest('a').addEventListener('click',e=>{const onResume=location.hash==='#resume';if(onResume)e.preventDefault();s.classList.remove('drop');void s.getBoundingClientRect();s.classList.add('drop');if(onResume||!location.hash||location.hash==='#home')setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),350)});s.addEventListener('animationend',()=>s.classList.remove('drop'))});
 /* routing */
 const views=[...document.querySelectorAll('[data-view]')];
 function route(){const h=location.hash.slice(1)||'home';const v=views.some(x=>x.dataset.view===h)?h:'home';views.forEach(x=>x.classList.toggle('on',x.dataset.view===v));document.querySelectorAll('#nav a').forEach(a=>a.getAttribute('href')==='#'+v?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));document.body.classList.remove('peek');window.scrollTo(0,0);}
@@ -605,6 +605,29 @@ function flock(){
     for(let i=0;i<n;i++){const s=size*(1-i*.14);gull(x0-i*size*.9,y0+i*size*.55,x1-i*size*.9,y1+i*size*.55,s,dur*(1+i*.04),i*350)}}
   setTimeout(flock,9000+Math.random()*8000)}
 setTimeout(flock,1800);
+})();
+
+/* footer anchor: dips, rides along as the page scrolls up, then sails off above the header */
+(()=>{const link=document.querySelector('.fanc');if(!link)return;const src=link.querySelector('.anc');let busy=false;
+const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+link.addEventListener('click',e=>{e.preventDefault();if(busy)return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){scrollTo(0,0);return}
+  busy=true;const r=src.getBoundingClientRect();
+  const c=src.cloneNode(true);c.classList.remove('drop');
+  Object.assign(c.style,{position:'fixed',left:r.left+'px',top:r.top+'px',width:r.width+'px',height:r.height+'px',zIndex:60,pointerEvents:'none',margin:0,transformOrigin:'50% 15%'});
+  c.querySelectorAll('use').forEach(u=>u.style.setProperty('--a','light-dark(#1f3a5f,#efe4cc)'));c.style.filter='drop-shadow(0 6px 10px #0714264d)';document.body.appendChild(c);src.style.visibility='hidden';
+  const y0=scrollY,D=Math.min(Math.max(y0*.35,700),1500),lift=r.top+r.height+40;
+  // 1. dip
+  c.animate([{transform:'translateY(0) rotate(0)'},{transform:'translateY(16px) rotate(-6deg)'},{transform:'translateY(10px) rotate(3deg)'}],{duration:380,easing:'cubic-bezier(.4,0,.2,1)',fill:'forwards'}).onfinish=()=>{
+    // 2. ride along while the page scrolls up, swaying gently on its chain
+    const t0=performance.now();
+    c.animate([{transform:'translateY(10px) rotate(3deg)'},{transform:'translateY(-6px) rotate(-4deg)'},{transform:'translateY(4px) rotate(3deg)'},{transform:'translateY(0) rotate(0)'}],{duration:D,easing:'ease-in-out',fill:'forwards'});
+    (function step(now){const k=Math.min((now-t0)/D,1);scrollTo(0,y0*(1-ease(k)));
+      if(k<1)return requestAnimationFrame(step);
+      // 3. haul it up and away above the header
+      c.animate([{transform:'translateY(0) rotate(0)',opacity:1},{transform:`translateY(${-lift*.35}px) rotate(-3deg)`,opacity:1,offset:.5},{transform:`translateY(${-lift}px) rotate(0)`,opacity:0}],{duration:650,easing:'cubic-bezier(.5,0,.75,0)',fill:'forwards'}).onfinish=()=>{c.remove();src.style.visibility='';busy=false};
+    })(t0)};
+});
 })();
 </script>
 </body>
