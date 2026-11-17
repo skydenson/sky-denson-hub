@@ -41,6 +41,7 @@ button{font:inherit;cursor:pointer}
 /* bar */
 .bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px max(5vw,16px);background:color-mix(in srgb,var(--sand) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .mark{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:Fraunces,serif;font-size:21px;font-weight:600;color:var(--pri)}
+.bar .hres{margin-left:auto;padding:8px 18px;font-size:15px}
 .bar nav{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
 .bar nav a{padding:10px 12px;border-radius:999px;text-decoration:none;font-size:14px;color:var(--mute)}
 .bar nav a:hover{color:var(--pri)}
@@ -259,6 +260,7 @@ a.pc-line:hover{color:#8a6b3c}
 
 <div class="bar">
   <a class="mark" href="#home"><svg class="anc" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true"><use href="#anchor" style="--a:var(--pri)"/></svg>Portfolio</a>
+  <a class="btn hres" href="#resume">Resume</a>
 </div>
 
 <!-- HOME -->
