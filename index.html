@@ -137,7 +137,8 @@ body.peek .hot .copy{opacity:1}
 .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:ew-resize;-webkit-appearance:none;appearance:none}
 .ba:has(input:focus-visible){outline:3px solid var(--brass);outline-offset:-3px}
 @media(pointer:coarse){.ba input{cursor:ew-resize}}
-.beach{position:relative;min-height:clamp(540px,78vh,780px);}@media(max-width:600px){.beach{min-height:430px}.beach-c{padding-top:44px!important}}.beach{overflow:hidden;background:#0d1f36}
+.beach{position:relative;min-height:clamp(540px,78vh,780px);}@media(max-width:600px){.beach{min-height:430px}@media(hover:none){.beach{touch-action:none}}.beach-c,.beach-c *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.beach-c{padding-top:44px!important}}.beach{overflow:hidden;background:#0d1f36}
 .beach>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .beach .fo{animation:fo 5.5s ease-in-out infinite}
 @keyframes fo{0%,100%{transform:translateY(-7px);opacity:.75}50%{transform:translateY(7px);opacity:1}}
@@ -540,9 +541,10 @@ function stir(){let busy=false;const R=110;
     const moving=Math.abs(c.ox)>.05||Math.abs(c.oy)>.05||c.b>.005;
     if(moving||c.on){c.el.setAttribute('transform',`translate(${c.ox.toFixed(1)} ${c.oy.toFixed(1)})`);c.el.setAttribute('opacity',Math.min(c.o+c.b*.18,.55).toFixed(2));c.el.style.strokeWidth=c.b>.01?(1+c.b*.3).toFixed(2)+'px':'';c.on=moving;busy=busy||moving}}
   return busy}
+let held=false; // on touch the boat stays wherever your finger leaves it
 let p={...HOME},tg={x:HOME.x,y:HOME.y},home=true,cx=null,cy=null,ang=HOME.a,spd=0,run=false,fy=1,fyT=1,trail=[],last=null;
 function aim(){
-  if(cx==null){tg={x:HOME.x,y:HOME.y};home=true;return}
+  if(cx==null){if(held)return;tg={x:HOME.x,y:HOME.y};home=true;return}
   const r=sec.getBoundingClientRect();
   if(cy<r.top||cy>r.bottom||cx<r.left||cx>r.right){tg={x:HOME.x,y:HOME.y};home=true;return}
   const m=svg.getScreenCTM();if(!m)return;
@@ -583,10 +585,12 @@ function tick(now){
   if(vis||d>.5||trail.length||st)requestAnimationFrame(tick);else run=false}
 let vis=true;function go(){aim();if(!run){run=true;requestAnimationFrame(tick)}}
 new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis)go()}).observe(sec);go();
-addEventListener('pointermove',e=>{cx=e.clientX;cy=e.clientY;go()},{passive:true});
+addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'&&!sec.contains(e.target))return;cx=e.clientX;cy=e.clientY;held=false;go()},{passive:true});
+sec.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;cx=e.clientX;cy=e.clientY;held=false;go()});
+const lift=e=>{if(e.pointerType==='mouse')return;cx=null;held=true};
+sec.addEventListener('pointerup',lift);sec.addEventListener('pointercancel',lift);
 addEventListener('scroll',go,{passive:true});
-document.addEventListener('pointerleave',()=>{cx=null;go()});
-sec.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse'){cx=null;go()}});
+document.addEventListener('pointerleave',()=>{if(held)return;cx=null;go()});
 })();
 
 /* gulls: now and then a few fly across from the top left, flapping */
