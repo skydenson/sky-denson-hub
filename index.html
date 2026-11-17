@@ -234,7 +234,7 @@ footer .btn{border-color:#efe4cc;color:#efe4cc}footer .btn:hover{background:var(
 </svg>
 
 <div class="bar">
-  <a class="mark" href="#home"><svg class="anc" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true"><use href="#anchor" style="--a:var(--pri)"/></svg>Sky Denson</a>
+  <a class="mark" href="#home"><svg class="anc" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true"><use href="#anchor" style="--a:var(--pri)"/></svg>Portfolio</a>
 </div>
 
 <!-- HOME -->
@@ -512,7 +512,7 @@ function drawWake(now){
   wk.innerHTML=h}
 function tick(now){
   const dx=tg.x-p.x,dy=tg.y-p.y,d=Math.hypot(dx,dy);
-  const v=Math.min(d*.05,7);
+  const v=Math.min(d*.035,4.8);
   if(d>.5){p.x+=dx/d*v;p.y+=dy/d*v}
   spd+=(v-spd)*.15;
   const want=d>8?Math.atan2(dy,dx)*180/Math.PI:(home?HOME.a:ang);
