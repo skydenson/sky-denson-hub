@@ -307,8 +307,8 @@ footer .btn{border-color:#efe4cc;color:#efe4cc}footer .btn:hover{background:var(
 <g id="bBoat" transform="translate(1130 250) rotate(-12) scale(1.15)"><path d="M-34 -13 Q10 -16 44 0 Q10 16 -34 13 Z" fill="#0b1830" opacity=".35" transform="translate(6 8)"/><path d="M-34 -13 Q10 -16 44 0 Q10 16 -34 13 Z" fill="#f7f0e1"/><path d="M-30 -9 Q8 -12 36 0 Q8 12 -30 9 Z" fill="#b08d57"/><path d="M2 0 Q-6 -46 -24 -58 L-24 2 Z" fill="#fbf6ea" opacity=".95"/><path d="M2 0 L-24 2" stroke="#1f3a5f" stroke-width="2"/><circle cx="2" cy="0" r="3" fill="#1f3a5f"/></g>
 <g transform="translate(1010 80) rotate(-6) scale(0.65)"><path d="M-30 0 L-140 -36 M-30 0 L-140 36" stroke="#e8f3f5" stroke-width="2.2" opacity="0.45" stroke-linecap="round"/><path d="M-30 0 L-180 -54 M-30 0 L-180 54" stroke="#e8f3f5" stroke-width="1.9" opacity="0.38" stroke-linecap="round"/><path d="M-30 0 L-220 -72 M-30 0 L-220 72" stroke="#e8f3f5" stroke-width="1.5" opacity="0.31" stroke-linecap="round"/><path d="M-30 0 L-260 -90 M-30 0 L-260 90" stroke="#e8f3f5" stroke-width="1.2" opacity="0.24" stroke-linecap="round"/><path d="M-30 0 L-300 -108 M-30 0 L-300 108" stroke="#e8f3f5" stroke-width="0.8" opacity="0.17" stroke-linecap="round"/><path d="M-30 0 Q-200 0 -320 0" stroke="#e8f3f5" stroke-width="5" opacity=".18" filter="url(#bBlur)"/><path d="M-34 -13 Q10 -16 44 0 Q10 16 -34 13 Z" fill="#0b1830" opacity=".35" transform="translate(6 8)"/><path d="M-34 -13 Q10 -16 44 0 Q10 16 -34 13 Z" fill="#f7f0e1"/><path d="M-30 -9 Q8 -12 36 0 Q8 12 -30 9 Z" fill="#b08d57"/><path d="M2 0 Q-6 -46 -24 -58 L-24 2 Z" fill="#fbf6ea" opacity=".95"/><path d="M2 0 L-24 2" stroke="#1f3a5f" stroke-width="2"/><circle cx="2" cy="0" r="3" fill="#1f3a5f"/></g>
 <g transform="translate(1420 110) rotate(8) scale(0.9)"><path d="M-20 0 C-120 -10 -220 -40 -320 -50 M-20 0 C-120 10 -220 40 -320 50" stroke="#eef6f7" stroke-width="2" fill="none" opacity=".4"/><path d="M-20 -6 L-300 -2 L-300 2 L-20 6 Z" fill="#eef6f7" opacity=".3" filter="url(#bBlur2)"/><path d="M-22 -9 L18 -9 Q34 0 18 9 L-22 9 Z" fill="#efe4cc"/><rect x="-14" y="-6" width="14" height="12" rx="2" fill="#1f3a5f"/></g>
-<circle cx="1003" cy="333" r="7" fill="#0b1830" opacity=".3"/><circle cx="1000" cy="330" r="7" fill="#c0532f"/><circle cx="1000" cy="330" r="3" fill="#efe4cc"/><circle cx="1000" cy="330" r="14" fill="none" stroke="#e8f3f5" stroke-width="1.2" opacity=".35"/>
-<circle cx="763" cy="473" r="7" fill="#0b1830" opacity=".3"/><circle cx="760" cy="470" r="7" fill="#c0532f"/><circle cx="760" cy="470" r="3" fill="#efe4cc"/><circle cx="760" cy="470" r="14" fill="none" stroke="#e8f3f5" stroke-width="1.2" opacity=".35"/>
+
+
 
 
 
@@ -474,16 +474,16 @@ const W=1600,HOME={x:1130,y:250,a:-12},S=1.15,LIFE=2.6;
 const shore=x=>{const t=Math.min(Math.max(x/W,0),1.05);return 520+Math.pow(t,1.35)*190+18*Math.sin(t*Math.PI*2.2+.6)};
 const CR=[...document.querySelectorAll('#bCrest path')].map(el=>{const m=el.getAttribute('d').match(/M(-?[\d.]+) (-?[\d.]+) q-?[\d.]+ -?[\d.]+ (-?[\d.]+) (-?[\d.]+)/);
   return{el,x:+m[1]+ +m[3]/2,y:+m[2]+ +m[4]/2,o:+el.getAttribute('opacity'),ox:0,oy:0,b:0}});
-function stir(){let busy=false;const R=170;
+function stir(){let busy=false;const R=130;
   for(const c of CR){let tx=0,ty=0,tb=0;
     const dx=c.x-p.x,dy=c.y-p.y,d=Math.hypot(dx,dy);
-    if(d<R&&spd>.15){const k=Math.pow(1-d/R,1.3)*Math.min(spd/3,1);tx=dx/(d||1)*k*18;ty=dy/(d||1)*k*18;tb=k}
+    if(d<R&&spd>.15){const k=Math.pow(1-d/R,1.3)*Math.min(spd/3,1);tx=dx/(d||1)*k*9;ty=dy/(d||1)*k*9;tb=k}
     for(const t of trail){const ex=c.x-t.x,ey=c.y-t.y,ed=Math.hypot(ex,ey);
       if(ed<110){const age=(performance.now()-t.t)/1000,k=(1-ed/110)*t.v*Math.max(1-age/LIFE,0);
-        if(k>.02){const nx=-Math.sin(t.a),ny=Math.cos(t.a),sd=Math.sign(ex*nx+ey*ny)||1;tx+=nx*sd*k*10;ty+=ny*sd*k*10;if(k>tb)tb=k}}}
+        if(k>.02){const nx=-Math.sin(t.a),ny=Math.cos(t.a),sd=Math.sign(ex*nx+ey*ny)||1;tx+=nx*sd*k*5;ty+=ny*sd*k*5;if(k>tb)tb=k}}}
     c.ox+=(tx-c.ox)*.12;c.oy+=(ty-c.oy)*.12;c.b+=(Math.min(tb,1)-c.b)*.12;
     const moving=Math.abs(c.ox)>.05||Math.abs(c.oy)>.05||c.b>.005;
-    if(moving||c.on){c.el.setAttribute('transform',`translate(${c.ox.toFixed(1)} ${c.oy.toFixed(1)})`);c.el.setAttribute('opacity',Math.min(c.o+c.b*.5,.75).toFixed(2));c.el.style.strokeWidth=c.b>.01?(1+c.b*.6).toFixed(2)+'px':'';c.on=moving;busy=busy||moving}}
+    if(moving||c.on){c.el.setAttribute('transform',`translate(${c.ox.toFixed(1)} ${c.oy.toFixed(1)})`);c.el.setAttribute('opacity',Math.min(c.o+c.b*.25,.6).toFixed(2));c.el.style.strokeWidth=c.b>.01?(1+c.b*.3).toFixed(2)+'px':'';c.on=moving;busy=busy||moving}}
   return busy}
 let p={...HOME},tg={x:HOME.x,y:HOME.y},home=true,cx=null,cy=null,ang=HOME.a,spd=0,run=false,fy=1,fyT=1,trail=[],last=null;
 function aim(){
@@ -552,7 +552,7 @@ function flock(){
     const n=1+Math.floor(Math.random()*3),size=Math.min(Math.max(w*.075,70),150)*(.85+Math.random()*.3);
     const y0=-size+Math.random()*h*.12,x0=-size*1.4,x1=w+size*1.4,y1=y0+h*(.25+Math.random()*.3),dur=(9000+Math.random()*4000)*Math.max(w/1400,.6);
     for(let i=0;i<n;i++){const s=size*(1-i*.14);gull(x0-i*size*.9,y0+i*size*.55,x1-i*size*.9,y1+i*size*.55,s,dur*(1+i*.04),i*350)}}
-  setTimeout(flock,7000+Math.random()*9000)}
+  setTimeout(flock,9000+Math.random()*8000)}
 setTimeout(flock,1800);
 })();
 </script>
