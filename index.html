@@ -493,7 +493,8 @@ function aim(){
   const m=svg.getScreenCTM();if(!m)return;
   const q=new DOMPoint(cx,cy).matrixTransform(m.inverse());
   const x=Math.min(Math.max(q.x,60),W-60);
-  tg={x,y:Math.min(Math.max(q.y,40),shore(x)-40)};home=false}
+  if(q.y>shore(x)-40){if(home){tg={x:p.x,y:p.y};home=false}return} // on the surf or sand: hold course, don't follow
+  tg={x,y:Math.max(q.y,40)};home=false}
 const f=n=>n.toFixed(1);
 function drawWake(now){
   trail=trail.filter(t=>now-t.t<LIFE*1000);
