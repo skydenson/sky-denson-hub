@@ -497,22 +497,17 @@ function aim(){
 const f=n=>n.toFixed(1);
 function drawWake(now){
   trail=trail.filter(t=>now-t.t<LIFE*1000);
+  // the wake is drawn with the same short curved strokes as the sea's wave marks
+  const mark=(x,y,a,L,w,o)=>{const dx=Math.cos(a)*L,dy=Math.sin(a)*L;
+    return `<path d="M${f(x-dx/2)} ${f(y-dy/2)}q${f(dx/2+Math.sin(a)*3)} ${f(dy/2-Math.cos(a)*3)} ${f(dx)} ${f(dy)}" stroke="#cfe6ee" stroke-width="${w.toFixed(1)}" opacity="${o.toFixed(2)}"/>`};
   let h='';
-  for(let i=1;i<trail.length;i++){
-    const A=trail[i-1],B=trail[i],ka=(now-A.t)/1000,kb=(now-B.t)/1000,k=ka/LIFE,e=1-k;
-    // Kelvin arms spread outward as the water ages behind the boat
-    for(const side of [1,-1]){
-      const wa=(6+ka*22)*side,wb=(6+kb*22)*side;
-      const ax=A.x-Math.sin(A.a)*wa,ay=A.y+Math.cos(A.a)*wa,bx=B.x-Math.sin(B.a)*wb,by=B.y+Math.cos(B.a)*wb;
-      h+=`<path d="M${f(ax)} ${f(ay)}L${f(bx)} ${f(by)}" stroke="#f4fbfb" stroke-width="${f(.5+1.8*e*A.v)}" opacity="${(e*e*.5*A.v).toFixed(2)}"/>`;
-      // soft outer swell that keeps rolling away
-      const wo=wa*1.55,wob=wb*1.55;
-      h+=`<path d="M${f(A.x-Math.sin(A.a)*wo)} ${f(A.y+Math.cos(A.a)*wo)}L${f(B.x-Math.sin(B.a)*wob)} ${f(B.y+Math.cos(B.a)*wob)}" stroke="#cfe6ee" stroke-width="${f(1+3*e)}" opacity="${(e*.16*A.v).toFixed(2)}"/>`}
-    // churned water down the middle
-    h+=`<path d="M${f(A.x)} ${f(A.y)}L${f(B.x)} ${f(B.y)}" stroke="#e8f4f4" stroke-width="${f(5+ka*14)}" opacity="${(e*e*.13*A.v).toFixed(2)}"/>`;
-    // little transverse crests between the arms
-    if(i%3===0){const w=(4+ka*15),c=Math.cos(A.a),s2=Math.sin(A.a);
-      h+=`<path d="M${f(A.x-s2*w)} ${f(A.y+c*w)}Q${f(A.x-c*w*.5)} ${f(A.y-s2*w*.5)} ${f(A.x+s2*w)} ${f(A.y-c*w)}" stroke="#ffffff" stroke-width="1" opacity="${(e*.12*A.v).toFixed(2)}"/>`}
+  for(let i=0;i<trail.length;i++){
+    const A=trail[i],age=(now-A.t)/1000,e=1-age/LIFE,v=A.v,ca=Math.cos(A.a),sa=Math.sin(A.a);
+    if(i%3===0)for(const side of [1,-1]){
+      const w=(7+age*20)*side,j=((i*37)%11-5)*.6;
+      h+=mark(A.x-sa*w+ca*j,A.y+ca*w+sa*j,A.a+side*.35,18+age*9,1.2+e*1.1,e*e*.6*v);
+      if(i%6===0){const w2=w*1.5;h+=mark(A.x-sa*w2,A.y+ca*w2,A.a+side*.25,12+age*7,1,e*.28*v)}}
+    if(i%7===0)h+=mark(A.x,A.y,A.a,12+age*6,1.4,e*e*.35*v);
   }
   wk.innerHTML=h}
 function tick(now){
