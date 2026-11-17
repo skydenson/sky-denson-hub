@@ -214,10 +214,27 @@ footer .btn{border-color:#efe4cc;color:#efe4cc}footer .btn:hover{background:var(
 /* modal */
 .modal{position:fixed;inset:0;z-index:60;background:#15284199;display:none;place-items:center;padding:16px}
 .modal.on{display:grid}
-.modal form{background:var(--sand);color:var(--ink);border-radius:22px;padding:26px;width:min(520px,100%);display:grid;gap:12px;box-shadow:0 0 0 3px var(--brass)}
-.modal label{display:grid;gap:4px;font-size:14px;color:var(--mute)}
-.modal input,.modal textarea{min-height:44px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--shell);color:var(--ink);font:16px Inter,sans-serif}
-.modal .r{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.modal{background:#071224b3;backdrop-filter:blur(3px)}
+.pc-wrap{width:min(720px,100%);display:grid;gap:16px}
+.pc{display:grid;grid-template-columns:1fr 1fr;background:#f6eedb;color:#1f3a5f;border-radius:6px;overflow:hidden;box-shadow:0 30px 60px #0007,0 0 0 1px #d6c6a4;position:relative;aspect-ratio:3/2;transform-origin:50% 80%}
+.modal.on .pc{animation:pcIn .55s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pcIn{0%{transform:translateY(40px) rotate(-6deg) scale(.92);opacity:0}100%{transform:none;opacity:1}}
+.pc::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,#0000 0 3px,#8a6b3c08 3px 4px)}
+.pc-l{position:relative;margin:14px 0 14px 14px;border-radius:3px;overflow:hidden}
+.pc-l svg{position:absolute;inset:0;width:100%;height:100%}
+.pc-greet{position:absolute;left:18px;bottom:14px;margin:0;font-family:Fraunces,serif;font-size:clamp(26px,4vw,38px);line-height:1;color:#1f3a5f;font-style:italic}
+.pc-greet span{display:block;font-size:.45em;font-style:normal;letter-spacing:.06em;margin-top:6px;color:#8a6b3c}
+.pc-r{position:relative;padding:22px 24px 22px 26px;border-left:1.5px solid #d6c6a4;margin:22px 0;display:flex;flex-direction:column;justify-content:flex-end;gap:4px}
+.pc-stamp{position:absolute;top:0;right:22px;width:64px;height:76px;padding:4px;background:radial-gradient(circle,#0000 2.4px,#f6eedb 2.6px) -4px -4px/8px 8px;filter:drop-shadow(0 1px 1px #0003)}
+.pc-stamp>div{height:100%;background:#efe4cc;border:2px solid #b08d57;display:grid;place-items:center;align-content:center;gap:2px}
+.pc-stamp small{font-size:9px;letter-spacing:.12em;color:#8a6b3c}
+.pc-mark{position:absolute;top:18px;right:72px;width:120px;opacity:.55;transform:rotate(-12deg)}
+.pc-to{font-family:Fraunces,serif;font-size:clamp(26px,3.6vw,34px);color:#1f3a5f;margin:0 0 4px;font-weight:500}
+.pc-line{display:block;border-bottom:1.5px solid #c9b48a;padding:6px 0 4px;min-height:30px;color:#1f3a5f;font-size:clamp(15px,2vw,18px);text-decoration:none;font-family:"Courier New",monospace;font-weight:600}
+a.pc-line:hover{color:#8a6b3c}
+.pc-act{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.pc-act .btn{border-color:#efe4cc;color:#efe4cc}.pc-act .btn.solid{background:#b08d57;border-color:#b08d57;color:#152841}
+@media(max-width:620px){.pc-greet{color:#efe4cc;text-shadow:0 2px 10px #0718}.pc-greet span{color:#efe4cc}.pc{grid-template-columns:1fr;aspect-ratio:auto}.pc-l{height:190px;margin:12px 12px 0}.pc-r{border-left:0;border-top:1.5px solid #d6c6a4;margin:14px 16px 18px;padding:96px 0 0}.pc-stamp{right:0;top:14px}.pc-mark{right:56px;top:20px}}
 @media(max-width:900px){.hero,.bio,.row,.row:nth-child(even),.ch,.ch.ph,.two,.cv{grid-template-columns:minmax(0,1fr)}.row:nth-child(even) .copy{order:0}.how ol{grid-template-columns:minmax(0,1fr)}.scene{min-height:320px}body.peek .copy{opacity:1}}
 @media(max-width:600px){.bar nav{margin-left:0;width:100%;overflow-x:auto;flex-wrap:nowrap}.bar nav a{flex:none}.hide-s{display:none}table{font-size:14px}.scr{height:540px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -359,11 +376,11 @@ footer .btn{border-color:#efe4cc;color:#efe4cc}footer .btn:hover{background:var(
 <main data-view="resume">
   <section class="band"><div class="wrap">
     <a class="btn" href="#home" style="margin-bottom:20px">← Back to projects</a>
-    <div class="ch" style="align-items:end;margin-bottom:28px"><div><h1>Resume</h1></div><div><a class="btn" href="https://www.linkedin.com/in/skydenson" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21H9z"/></svg>LinkedIn ↗</a></div></div>
+    <div class="ch" style="align-items:end;margin-bottom:28px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px"><div><h1>Resume</h1></div><div style="margin-left:auto;padding-bottom:12px"><a class="btn" href="https://www.linkedin.com/in/skydenson" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.3-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21H9z"/></svg>LinkedIn ↗</a></div></div>
     <div class="cv">
       <div>
         <h2>Education</h2>
-        <ul class="tl"><li><b>New York University, Schack Institute</b><span>MS in Real Estate Development, Global Development concentration</span></li><li><b>University of Nevada, Las Vegas</b><span>BS in Business Administration, Real Estate<br>BS in Business Administration, Finance</span></li><li><b>INTBAU Summer Studio</b><span>Charleston, SC · 2026 · hand drawing, charrette, jury</span></li></ul>
+        <ul class="tl"><li><b>New York University, Schack Institute</b><span>MS in Real Estate Development</span></li><li><b>University of Nevada, Las Vegas</b><span>BS in Business Administration, Real Estate<br>BS in Business Administration, Finance</span></li><li><b>INTBAU Summer Studio</b><span>Charleston, SC · 2026 · hand drawing, charrette, jury</span></li></ul>
       </div>
       <div>
         <h2>Experience</h2>
@@ -390,21 +407,39 @@ footer .btn{border-color:#efe4cc;color:#efe4cc}footer .btn:hover{background:var(
 <div class="port" id="port" aria-hidden="true"><span id="portl">View</span></div>
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
-  <form id="cform">
-    <h2 id="mt" style="font-size:30px">Open a Conversation</h2>
-    <div id="cfields" style="display:grid;gap:12px">
-      <label>Name<input id="cn" required></label>
-      <label>Email<input id="ce" type="email" required></label>
-      <label>Message<textarea id="cm" rows="4" required></textarea></label>
+  <div class="pc-wrap">
+    <div class="pc">
+      <div class="pc-l" aria-hidden="true">
+        <svg viewBox="0 0 300 260" preserveAspectRatio="xMidYMid slice">
+          <defs><linearGradient id="pcSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f3a5f"/><stop offset="1" stop-color="#2f6f8f"/></linearGradient></defs>
+          <rect width="300" height="260" fill="url(#pcSea)"/>
+          <g fill="none" stroke="#cfe6ee" stroke-linecap="round" opacity=".45"><path d="M20 60q8-4 16 0M70 40q8-4 16 0M150 70q8-4 16 0M230 50q8-4 16 0M40 120q8-4 16 0M200 110q8-4 16 0M110 150q8-4 16 0M250 160q8-4 16 0M30 190q8-4 16 0"/></g>
+          <path d="M0 214 Q60 196 130 206 T300 192 V260 H0Z" fill="#efe4cc"/>
+          <path d="M0 214 Q60 196 130 206 T300 192" fill="none" stroke="#fff" stroke-width="3" opacity=".85"/>
+          <g transform="translate(170 132) rotate(-14)"><path d="M-30 0 L-120 -26 M-30 0 L-120 26" stroke="#e8f3f5" stroke-width="1.6" opacity=".5"/><path d="M-34 -13 Q10 -16 44 0 Q10 16 -34 13Z" fill="#f7f0e1"/><path d="M-30 -9 Q8 -12 36 0 Q8 12 -30 9Z" fill="#b08d57"/><path d="M2 0 Q-6 -46 -24 -58 L-24 2Z" fill="#fbf6ea"/><circle cx="2" r="3" fill="#1f3a5f"/></g>
+          <g transform="translate(62 70)" fill="none" stroke="#efe4cc" opacity=".8"><circle r="26" stroke-width="1.5"/><circle r="19" stroke-width=".8"/><path d="M0 -32V32M-32 0H32" stroke-width=".8"/><path d="M0 -24 L5 0 0 24 -5 0Z" fill="#b08d57" stroke="none" transform="rotate(35)"/><text y="-36" font-size="10" text-anchor="middle" fill="#efe4cc" stroke="none" font-family="Fraunces,serif">N</text></g>
+        </svg>
+        <p class="pc-greet">Greetings<br><span>from the Gulf Coast</span></p>
+      </div>
+      <div class="pc-r">
+        <div class="pc-stamp" aria-hidden="true"><div><svg width="34" height="34" viewBox="0 0 64 64"><use href="#anchor" style="--a:#1f3a5f"/></svg><small>TX · NY</small></div></div>
+        <svg class="pc-mark" viewBox="0 0 120 70" aria-hidden="true"><circle cx="34" cy="35" r="26" fill="none" stroke="#1f3a5f" stroke-width="1.6"/><circle cx="34" cy="35" r="20" fill="none" stroke="#1f3a5f" stroke-width=".8"/><text x="34" y="33" font-size="8" text-anchor="middle" fill="#1f3a5f" font-family="Inter,sans-serif" letter-spacing="1">GALVESTON</text><text x="34" y="44" font-size="7" text-anchor="middle" fill="#1f3a5f" font-family="Inter,sans-serif">2026</text><path d="M64 22q7-5 14 0t14 0t14 0t14 0M64 35q7-5 14 0t14 0t14 0t14 0M64 48q7-5 14 0t14 0t14 0t14 0" fill="none" stroke="#1f3a5f" stroke-width="1.6"/></svg>
+        <h2 id="mt" class="pc-to">Sky Denson</h2>
+        <a class="pc-line" href="mailto:bskydenson@gmail.com">bskydenson@gmail.com</a>
+        <span class="pc-line pc-blank"></span>
+        <span class="pc-line pc-blank"></span>
+      </div>
     </div>
-    <p id="cdone" hidden style="margin:0"></p>
-    <div class="r"><button type="button" class="btn" id="cx">Close</button><button class="btn solid" id="cs">Prepare message</button></div>
-  </form>
+    <div class="pc-act">
+      <a class="btn solid" href="mailto:bskydenson@gmail.com">Write to me</a>
+      <button type="button" class="btn" id="pcCopy">Copy email</button>
+      <button type="button" class="btn" id="cx">Close</button>
+    </div>
+  </div>
 </div>
 
 <script>
 {
-const EMAIL=''; // add a public email to turn on the mail link
 const $=s=>document.querySelector(s);
 const P=[
  {id:'galveston-2050',w:'g50',t:'Galveston 2050',k:'Civic plan · Website · 3D tool',c:'Plan',pl:'Galveston, Texas',s:'In progress',u:'https://galveston2050.com',d:'A 74 page master plan and manifesto for the island. Its website opens with chapter one: build your own Seawall in 3D.'},
@@ -465,11 +500,10 @@ function route(){const h=location.hash.slice(1)||'home';const v=views.some(x=>x.
 addEventListener('hashchange',route);route();
 
 /* contact */
-const md=$('#modal');document.querySelectorAll('[data-contact]').forEach(b=>b.addEventListener('click',()=>{md.classList.add('on');$('#cfields').hidden=false;$('#cdone').hidden=true;$('#cs').hidden=false;$('#cn').focus()}));
+const md=$('#modal');document.querySelectorAll('[data-contact]').forEach(b=>b.addEventListener('click',()=>{md.classList.add('on');$('#cx').focus()}));
 $('#cx').addEventListener('click',()=>md.classList.remove('on'));md.addEventListener('click',e=>{if(e.target===md)md.classList.remove('on')});
 addEventListener('keydown',e=>{if(e.key==='Escape')md.classList.remove('on')});
-$('#cform').addEventListener('submit',e=>{e.preventDefault();const body=`From ${$('#cn').value} (${$('#ce').value})\n\n${$('#cm').value}`;$('#cfields').hidden=true;$('#cs').hidden=true;const d=$('#cdone');d.hidden=false;
- d.innerHTML=EMAIL?`Your note is ready. <a href="mailto:${EMAIL}?subject=Hello%20Sky&body=${encodeURIComponent(body)}">Open it in your mail app</a> or write to ${EMAIL}.`:'Thanks. Your note is drafted here; email details are coming soon.'});
+$('#pcCopy').addEventListener('click',async e=>{const b=e.currentTarget;try{await navigator.clipboard.writeText('bskydenson@gmail.com');b.textContent='Copied'}catch{b.textContent='bskydenson@gmail.com'}setTimeout(()=>b.textContent='Copy email',1800)});
 }
 /* hero boat: follows the cursor on the water, waves and a living wake */
 (()=>{const svg=document.getElementById('beachSvg'),sec=svg&&svg.closest('.beach');if(!sec)return;
