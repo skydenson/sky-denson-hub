@@ -137,7 +137,7 @@ body.peek .hot .copy{opacity:1}
 .ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;cursor:ew-resize;-webkit-appearance:none;appearance:none}
 .ba:has(input:focus-visible){outline:3px solid var(--brass);outline-offset:-3px}
 @media(pointer:coarse){.ba input{cursor:ew-resize}}
-.beach{position:relative;min-height:clamp(540px,78vh,780px);overflow:hidden;background:#0d1f36}
+.beach{position:relative;min-height:clamp(540px,78vh,780px);}@media(max-width:600px){.beach{min-height:430px}.beach-c{padding-top:44px!important}}.beach{overflow:hidden;background:#0d1f36}
 .beach>svg{position:absolute;inset:0;width:100%;height:100%;display:block}
 .beach .fo{animation:fo 5.5s ease-in-out infinite}
 @keyframes fo{0%,100%{transform:translateY(-7px);opacity:.75}50%{transform:translateY(7px);opacity:1}}
@@ -148,7 +148,6 @@ body.peek .hot .copy{opacity:1}
 .beach-c{position:relative;z-index:1;padding:clamp(56px,10vh,120px) max(5vw,16px) 40px;box-sizing:content-box}
 .beach h1{color:#efe4cc;font-size:clamp(60px,10.5vw,144px);letter-spacing:-.02em;text-shadow:0 6px 40px #071224cc}
 .beach .lede{color:#f3ead7;max-width:30ch;text-shadow:0 2px 18px #071224}
-@media(max-width:600px){.beach{min-height:600px}}
 .anc{display:block;transform-origin:50% 12%}
 .anc.drop{animation:drop .9s cubic-bezier(.4,0,.2,1)}
 @keyframes drop{0%{transform:translateY(0) rotate(0)}35%{transform:translateY(12px) rotate(-6deg)}55%{transform:translateY(14px) rotate(4deg)}80%{transform:translateY(-3px) rotate(-1deg)}100%{transform:translateY(0) rotate(0)}}
@@ -526,7 +525,7 @@ $('#pcCopy').addEventListener('click',async e=>{const b=e.currentTarget;try{awai
 /* hero boat: follows the cursor on the water, waves and a living wake */
 (()=>{const svg=document.getElementById('beachSvg'),sec=svg&&svg.closest('.beach');if(!sec)return;
 const boat=document.getElementById('bBoat'),wk=document.getElementById('bRip');
-const W=1600,HOME={x:1130,y:250,a:-12},S=1.15,LIFE=2.6;
+const W=1600,HOME=innerWidth<600?{x:1060,y:300,a:-12}:{x:1130,y:250,a:-12},S=1.15,LIFE=2.6;
 const shore=x=>{const t=Math.min(Math.max(x/W,0),1.05);return 520+Math.pow(t,1.35)*190+18*Math.sin(t*Math.PI*2.2+.6)};
 const CR=[...document.querySelectorAll('#bCrest path')].map(el=>{const m=el.getAttribute('d').match(/M(-?[\d.]+) (-?[\d.]+) q-?[\d.]+ -?[\d.]+ (-?[\d.]+) (-?[\d.]+)/);
   return{el,x:+m[1]+ +m[3]/2,y:+m[2]+ +m[4]/2,o:+el.getAttribute('opacity'),ox:0,oy:0,b:0}});
