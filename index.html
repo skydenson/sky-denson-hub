@@ -519,7 +519,7 @@ document.addEventListener('pointerleave',()=>{port.classList.remove('on')});
 $('#idx').innerHTML=IDX.map(r=>`<tr><td>${r.u?`<a href="${r.u}" target="_blank" rel="noopener">${r.t} ↗</a>`:r.t}</td><td>${r.c}</td><td class="hide-s">${r.pl}</td><td><span class="stat">${r.s}</span></td></tr>`).join('');
 
 /* anchor drop */
-document.querySelectorAll('.anc').forEach(s=>{s.closest('a').addEventListener('click',e=>{const onResume=location.hash==='#resume';if(onResume)e.preventDefault();s.classList.remove('drop');void s.getBoundingClientRect();s.classList.add('drop');if(onResume){setTimeout(rollUpResume,180);return}if(!location.hash||location.hash==='#home')setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),350)});s.addEventListener('animationend',()=>s.classList.remove('drop'))});
+document.querySelectorAll('.anc').forEach(s=>{s.closest('a').addEventListener('click',e=>{const onResume=location.hash==='#resume';if(onResume)e.preventDefault();s.classList.remove('drop');void s.getBoundingClientRect();s.classList.add('drop');window.__dipT=performance.now();if(onResume){setTimeout(rollUpResume,180);return}if(!location.hash||location.hash==='#home')setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),350)});s.addEventListener('animationend',()=>s.classList.remove('drop'))});
 /* routing */
 const views=[...document.querySelectorAll('[data-view]')];
 function route(){const h=location.hash.slice(1)||'home';const v=views.some(x=>x.dataset.view===h)?h:'home';views.forEach(x=>x.classList.toggle('on',x.dataset.view===v));document.querySelectorAll('#nav a').forEach(a=>a.getAttribute('href')==='#'+v?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));document.body.classList.remove('peek');window.scrollTo(0,0);}
@@ -646,7 +646,7 @@ function rollUpResume(){
 function resumeShade(main){
   const shade=document.createElement('div');shade.className='shade';
   const inner=document.createElement('div');inner.style.transform=`translateY(${main.getBoundingClientRect().top}px)`;
-  let n=main;while(n&&n.tagName!=='SCRIPT'){if(!(n.matches('[data-view]')&&n!==main)){const c=n.cloneNode(true);c.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));c.querySelectorAll('.drop').forEach(x=>x.classList.remove('drop'));c.removeAttribute('id');inner.appendChild(c)}n=n.nextElementSibling}
+  let n=main;while(n&&n.tagName!=='SCRIPT'){if(!(n.matches('[data-view]')&&n!==main)){const c=n.cloneNode(true);c.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));c.querySelectorAll('.drop').forEach(x=>{x.style.animationDelay=`-${Math.round(performance.now()-(window.__dipT||0))}ms`});c.removeAttribute('id');inner.appendChild(c)}n=n.nextElementSibling}
   shade.appendChild(inner);document.body.appendChild(shade);return shade}
 /* "Back to projects": the resume peels back from the bottom right corner like a turning page */
 document.querySelector('.backp')?.addEventListener('click',e=>{
