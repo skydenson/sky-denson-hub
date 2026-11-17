@@ -41,6 +41,12 @@ button{font:inherit;cursor:pointer}
 /* bar */
 .bar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:10px max(5vw,16px);background:color-mix(in srgb,var(--sand) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .mark{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:Fraunces,serif;font-size:21px;font-weight:600;color:var(--pri)}
+.shade{position:fixed;inset:0;z-index:25;overflow:hidden;background:var(--sand);pointer-events:none;box-shadow:0 10px 30px #0006}
+.shade>div{will-change:transform}
+.roll{position:fixed;left:0;right:0;top:0;height:28px;z-index:26;pointer-events:none;border-radius:14px;
+background:linear-gradient(180deg,#6e5530,#b8975f 18%,#f3e3bf 42%,#d9c08c 60%,#8a6b3c 85%,#4a361c);box-shadow:0 8px 14px -4px #0008,inset 0 1px 0 #ffffff55}
+.roll::before,.roll::after{content:"";position:absolute;top:2px;width:22px;height:24px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#e2c48a,#7a5c30);box-shadow:0 0 0 2px #4a361c}
+.roll::before{left:8px}.roll::after{right:8px}
 .bar .hres{margin-left:auto;padding:8px 18px;font-size:15px}
 .bar nav{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
 .bar nav a{padding:10px 12px;border-radius:999px;text-decoration:none;font-size:14px;color:var(--mute)}
@@ -514,7 +520,7 @@ document.addEventListener('pointerleave',()=>{port.classList.remove('on')});
 $('#idx').innerHTML=IDX.map(r=>`<tr><td>${r.u?`<a href="${r.u}" target="_blank" rel="noopener">${r.t} ↗</a>`:r.t}</td><td>${r.c}</td><td class="hide-s">${r.pl}</td><td><span class="stat">${r.s}</span></td></tr>`).join('');
 
 /* anchor drop */
-document.querySelectorAll('.anc').forEach(s=>{s.closest('a').addEventListener('click',e=>{const onResume=location.hash==='#resume';if(onResume)e.preventDefault();s.classList.remove('drop');void s.getBoundingClientRect();s.classList.add('drop');if(onResume||!location.hash||location.hash==='#home')setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),350)});s.addEventListener('animationend',()=>s.classList.remove('drop'))});
+document.querySelectorAll('.anc').forEach(s=>{s.closest('a').addEventListener('click',e=>{const onResume=location.hash==='#resume';if(onResume)e.preventDefault();s.classList.remove('drop');void s.getBoundingClientRect();s.classList.add('drop');if(onResume){setTimeout(rollUpResume,260);return}if(!location.hash||location.hash==='#home')setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),350)});s.addEventListener('animationend',()=>s.classList.remove('drop'))});
 /* routing */
 const views=[...document.querySelectorAll('[data-view]')];
 function route(){const h=location.hash.slice(1)||'home';const v=views.some(x=>x.dataset.view===h)?h:'home';views.forEach(x=>x.classList.toggle('on',x.dataset.view===v));document.querySelectorAll('#nav a').forEach(a=>a.getAttribute('href')==='#'+v?a.setAttribute('aria-current','page'):a.removeAttribute('aria-current'));document.body.classList.remove('peek');window.scrollTo(0,0);}
@@ -620,6 +626,25 @@ setTimeout(flock,1800);
 /* ship's wheel turns only as the page scrolls */
 (()=>{const h=document.querySelector('.naut .helm');if(!h)return;let q=false;
 addEventListener('scroll',()=>{if(q)return;q=true;requestAnimationFrame(()=>{h.style.transform=`rotate(${(scrollY*.4).toFixed(1)}deg)`;q=false})},{passive:true})})();
+
+/* resume -> home: the resume rolls up like a window shade, revealing home beneath */
+function rollUpResume(){
+  const main=document.querySelector('main[data-view="resume"]');
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches||!main){location.hash='#home';return}
+  const top=main.getBoundingClientRect().top,bar=document.querySelector('.bar').getBoundingClientRect().bottom;
+  const shade=document.createElement('div');shade.className='shade';
+  const inner=document.createElement('div');inner.style.transform=`translateY(${top}px)`;
+  let n=main;const parts=[];while(n){parts.push(n);n=n.nextElementSibling;if(n&&n.tagName==='SCRIPT')break}
+  parts.forEach(el=>{if(el.matches('[data-view]')&&el!==main)return;const c=el.cloneNode(true);c.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));c.removeAttribute('id');inner.appendChild(c)});
+  shade.appendChild(inner);const roll=document.createElement('div');roll.className='roll';
+  document.body.append(shade,roll);
+  location.hash='#home';
+  const vh=innerHeight,D=1100,t0=performance.now(),ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  (function step(now){const k=Math.min((now-t0)/D,1),e=ease(k),H=vh-(vh-bar)*e;
+    shade.style.clipPath=`inset(0 0 ${vh-H}px 0)`;roll.style.transform=`translateY(${H-14}px)`;
+    if(k<1)return requestAnimationFrame(step);
+    roll.animate([{opacity:1},{opacity:0}],{duration:250,fill:'forwards'}).onfinish=()=>roll.remove();shade.remove()})(t0);
+}
 </script>
 </body>
 </html>
