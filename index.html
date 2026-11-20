@@ -733,11 +733,22 @@ function rollUpResume(){
     roll.animate([{opacity:1},{opacity:0}],{duration:250,fill:'forwards'}).onfinish=()=>roll.remove();shade.remove()})(t0);
 }
 
+/* keep a cloned page looking exactly like the original: unique ids that still link up, and running animations held where they are */
+function freezeClone(orig,clone){
+  const map={};clone.querySelectorAll('[id]').forEach(x=>{const n=x.id+'__s';map[x.id]=n;x.id=n});
+  if(Object.keys(map).length){
+    const re=/url\(#([^)]+)\)|^#(.+)$/g;
+    clone.querySelectorAll('*').forEach(el=>{for(const at of [...el.attributes]){
+      if(!/#/.test(at.value))continue;
+      const v=at.value.replace(/url\(#([^)]+)\)/g,(m,id)=>map[id]?`url(#${map[id]})`:m).replace(/^#(.+)$/,(m,id)=>map[id]?'#'+map[id]:m);
+      if(v!==at.value)el.setAttribute(at.name,v)}})}
+  const oa=orig.querySelectorAll('.btl'),ca=clone.querySelectorAll('.btl');
+  oa.forEach((o,i)=>{const c=ca[i];if(!c)return;c.style.animation='none';c.style.transform=getComputedStyle(o).transform})}
 /* a frozen copy of the resume page as it looks right now, laid over the screen */
 function resumeShade(main){
   const shade=document.createElement('div');shade.className='shade';
   const inner=document.createElement('div');inner.style.transform=`translateY(${main.getBoundingClientRect().top}px)`;
-  let n=main;while(n&&n.tagName!=='SCRIPT'){if(!(n.matches('[data-view]')&&n!==main)){const c=n.cloneNode(true);c.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));c.querySelectorAll('.drop').forEach(x=>{x.style.animationDelay=`-${Math.round(performance.now()-(window.__dipT||0))}ms`});c.removeAttribute('id');inner.appendChild(c)}n=n.nextElementSibling}
+  let n=main;while(n&&n.tagName!=='SCRIPT'){if(!(n.matches('[data-view]')&&n!==main)){const c=n.cloneNode(true);freezeClone(n,c);c.querySelectorAll('.drop').forEach(x=>{x.style.animationDelay=`-${Math.round(performance.now()-(window.__dipT||0))}ms`});c.removeAttribute('id');inner.appendChild(c)}n=n.nextElementSibling}
   shade.appendChild(inner);document.body.appendChild(shade);return shade}
 /* "Back to projects": the resume peels back from the bottom right corner like a turning page */
 document.querySelector('.backp')?.addEventListener('click',e=>{
